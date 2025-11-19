@@ -1,10 +1,7 @@
 package br.com.zedaniel.screenmatch;
 
-import br.com.zedaniel.screenmatch.model.DadosEpisodio;
-import br.com.zedaniel.screenmatch.model.DadosSerie;
 import br.com.zedaniel.screenmatch.model.DadosTemporada;
-import br.com.zedaniel.screenmatch.service.ConsumoApi;
-import br.com.zedaniel.screenmatch.service.ConverteDados;
+import br.com.zedaniel.screenmatch.principal.Principal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,30 +18,9 @@ public class ScreenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		var consumoApi = new ConsumoApi();
-		var url = "https://www.omdbapi.com/?t=breaking+bad&apikey=93684a76";
-		var json = consumoApi.obterDados(url);
-		System.out.println(json);
-		var conversor = new ConverteDados();
-		DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
-		System.out.println(dados);
 
-		url = "https://www.omdbapi.com/?t=breaking+bad&apikey=93684a76&season=1&episode=1";
-		json = consumoApi.obterDados(url);
-		DadosEpisodio dadosEpisodio = conversor.obterDados(json, DadosEpisodio.class);
-		System.out.println(dadosEpisodio);
-
-		List<DadosTemporada> temporadas = new ArrayList<>();
-
-		for(int i = 1; i <= dados.totalTemporadas(); i++){
-			url = "https://www.omdbapi.com/?t=breaking+bad&apikey=93684a76&season=" + i;
-			json = consumoApi.obterDados(url);
-
-			DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
-			temporadas.add(dadosTemporada);
-		}
-
-		temporadas.forEach(System.out::println);
+		Principal principal = new Principal();
+		principal.exibeMenu();
 
 	}
 }

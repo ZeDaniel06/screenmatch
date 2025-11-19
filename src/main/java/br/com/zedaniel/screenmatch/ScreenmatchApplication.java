@@ -2,11 +2,15 @@ package br.com.zedaniel.screenmatch;
 
 import br.com.zedaniel.screenmatch.model.DadosEpisodio;
 import br.com.zedaniel.screenmatch.model.DadosSerie;
+import br.com.zedaniel.screenmatch.model.DadosTemporada;
 import br.com.zedaniel.screenmatch.service.ConsumoApi;
 import br.com.zedaniel.screenmatch.service.ConverteDados;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
@@ -29,6 +33,18 @@ public class ScreenmatchApplication implements CommandLineRunner {
 		json = consumoApi.obterDados(url);
 		DadosEpisodio dadosEpisodio = conversor.obterDados(json, DadosEpisodio.class);
 		System.out.println(dadosEpisodio);
+
+		List<DadosTemporada> temporadas = new ArrayList<>();
+
+		for(int i = 1; i <= dados.totalTemporadas(); i++){
+			url = "https://www.omdbapi.com/?t=breaking+bad&apikey=93684a76&season=" + i;
+			json = consumoApi.obterDados(url);
+
+			DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
+			temporadas.add(dadosTemporada);
+		}
+
+		temporadas.forEach(System.out::println);
 
 	}
 }

@@ -1,5 +1,6 @@
 package br.com.zedaniel.screenmatch;
 
+import br.com.zedaniel.screenmatch.model.DadosEpisodio;
 import br.com.zedaniel.screenmatch.model.DadosSerie;
 import br.com.zedaniel.screenmatch.service.ConsumoApi;
 import br.com.zedaniel.screenmatch.service.ConverteDados;
@@ -23,8 +24,11 @@ public class ScreenmatchApplication implements CommandLineRunner {
 		var conversor = new ConverteDados();
 		DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
 		System.out.println(dados);
-//		url = "https://coffee.alexflipnote.dev/random.json";
-//		json = consumoApi.obterDados(url);
-//		System.out.println(json);
+
+		url = "https://www.omdbapi.com/?t=breaking+bad&apikey=93684a76&season=1&episode=1";
+		json = consumoApi.obterDados(url);
+		DadosEpisodio dadosEpisodio = conversor.obterDados(json, DadosEpisodio.class);
+		System.out.println(dadosEpisodio);
+
 	}
 }

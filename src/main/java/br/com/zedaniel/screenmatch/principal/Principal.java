@@ -45,10 +45,10 @@ public class Principal {
 			temporadas.add(dadosTemporada);
 		}
 
-		temporadas.forEach(System.out::println);
+		//temporadas.forEach(System.out::println);
 
-        temporadas.forEach(t -> t.episodios()
-                .forEach(e -> System.out.println(e.titulo())));
+//        temporadas.forEach(t -> t.episodios()
+//                .forEach(e -> System.out.println(e.titulo())));
 
 
 
@@ -65,23 +65,40 @@ public class Principal {
                 .flatMap(t -> t.episodios().stream())
                 .collect(Collectors.toList());
 
-        System.out.println("\n-----------\nTop 10 episódios");
-        dadosEpisodios.stream()
-                .filter(n -> !n.avaliacao().equals("N/A"))
-                .peek(e -> System.out.println("Primeiro filtro(N/A) " + e))
-                        .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
-                .peek(e -> System.out.println("Ordenação " + e))
-                                .limit(10)
-                .peek(e -> System.out.println("Limitando " + e))
-                .map(e -> e.titulo().toUpperCase())
-                .peek(e -> System.out.println("Mapeamento " + e))
-                .forEach(System.out::println);
+//        System.out.println("\n-----------\nTop 10 episódios");
+//        dadosEpisodios.stream()
+//                .filter(n -> !n.avaliacao().equals("N/A"))
+//                .peek(e -> System.out.println("Primeiro filtro(N/A) " + e))
+//                        .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+//                .peek(e -> System.out.println("Ordenação " + e))
+//                                .limit(10)
+//                .peek(e -> System.out.println("Limitando " + e))
+//                .map(e -> e.titulo().toUpperCase())
+//                .peek(e -> System.out.println("Mapeamento " + e))
+//                .forEach(System.out::println);
 
-//        List<Episodio> episodios = temporadas.stream()
-//                .flatMap(t -> t.episodios().stream()
-//                        .map(d -> new Episodio(t.numero(), d)))
-//                .collect(Collectors.toList());
-//
+        List<Episodio> episodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()
+                        .map(d -> new Episodio(t.numero(), d)))
+                .collect(Collectors.toList());
+
+        episodios.forEach(System.out::println);
+
+        System.out.println("Digite sua busca de episódio: ");
+        var trechoTitulo = scanner.nextLine();
+        Optional<Episodio> busca = episodios.stream()
+                .filter(e -> e.getTitulo()
+                        .toUpperCase()
+                        .contains(trechoTitulo.toUpperCase()))
+                .findFirst();
+
+        if(busca.isPresent()){
+            System.out.println("Episódio encontrado!");
+            System.out.println("Temporada: " + busca.get().getTemporada());
+        }else{
+            System.out.println("Episódio não encontrado!");
+        }
+
 //        episodios.stream()
 //                .sorted(Comparator.comparing(Episodio::getAvaliacao).reversed())
 //                .limit(5)

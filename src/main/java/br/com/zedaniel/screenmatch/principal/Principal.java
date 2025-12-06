@@ -39,6 +39,8 @@ public class Principal {
                     1 - Buscar séries
                     2 - Buscar episódios
                     3 - Lista séries buscadas
+                    4 - Buscar série por nome
+                    5 - Buscar séries por ator
                     
                     0 - Sair
                     """);
@@ -56,6 +58,12 @@ public class Principal {
                 case 3:
                     listarSeriesBuscadas();
                     break;
+                case 4:
+                    buscarSeriePorTitulo();
+                    break;
+                case 5:
+                    buscarSeriesPorAtor();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -65,6 +73,29 @@ public class Principal {
             }
         }
 
+    }
+
+    private void buscarSeriesPorAtor() {
+    System.out.println("Qual o nome para busca? ");
+    var nomeAtor = scanner.nextLine();
+        System.out.println("Qual a avaliação mínima? ");
+        var avaliacao = scanner.nextDouble();
+        List<Serie> seriesEncontradas = repositorio.findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(nomeAtor, avaliacao);
+        System.out.println("Séries em que " + nomeAtor + " trabalhou:");
+        seriesEncontradas.forEach(s -> System.out.println(s.getTitulo() + ", avaliação: " +
+                s.getAvaliacao()));
+    }
+
+    private void buscarSeriePorTitulo() {
+        System.out.println("Escolha uma série pelo nome: ");
+        var nomeBusca = scanner.nextLine();
+        Optional<Serie> serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeBusca);
+
+        if(serieBuscada.isPresent()){
+            System.out.println("Dados da série: " + serieBuscada.get());
+        }else {
+            System.out.println("Série não encontrada!");
+        }
     }
 
     private void buscarSerieWeb(){
@@ -92,9 +123,10 @@ public class Principal {
         System.out.println("Escolha uma série pelo nome: ");
         var nomeSerie = scanner.nextLine();
 
-        Optional<Serie> busca = series.stream()
-                .filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase()))
-                .findFirst();
+        Optional<Serie> busca = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+                //series.stream()
+              //  .filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase()))
+                //.findFirst();
 
         if (busca.isPresent()) {
 

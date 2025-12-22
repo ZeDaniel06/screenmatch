@@ -92,9 +92,9 @@ public class Principal {
         var temporadas = scanner.nextInt();
         System.out.println("Qual avaliação mínima?");
         var avaliacao = scanner.nextDouble();
-        List<Serie> busca = repositorio.findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(
-                temporadas, avaliacao
-        );
+        List<Serie> busca = repositorio.seriesPorTemporadaEAvaliacao(temporadas, avaliacao);//findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(
+                //temporadas, avaliacao
+       // );
         busca.forEach(s -> System.out.println(s.getTitulo() +
                 ", avaliação: " + s.getAvaliacao()));
     }

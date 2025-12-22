@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class Principal {
 
     private Scanner scanner = new Scanner(System.in);
-
+    private Optional<Serie> serieBuscada;
     private ConsumoApi consumoApi = new ConsumoApi();
     private ConverteDados conversor = new ConverteDados();
 
@@ -45,6 +45,7 @@ public class Principal {
                     7 - Buscar por categoria
                     8 - Buscar por quantidade de temporadas
                     9 - Buscar episódio por trecho
+                    10 - Top 5 episódios de uma série
                     
                     0 - Sair
                     """);
@@ -80,6 +81,9 @@ public class Principal {
                 case 9:
                     buscarEpisodioPorTrecho();
                     break;
+                case 10:
+                    topEpisodiosPorSerie();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -87,6 +91,17 @@ public class Principal {
                     System.out.println("Opção Inválida!");
                     break;
             }
+        }
+
+    }
+
+    private void topEpisodiosPorSerie() {
+        buscarSeriePorTitulo();
+        if(serieBuscada.isPresent()){
+            Serie serie = serieBuscada.get();
+            List<Episodio> topEpisodios = repositorio.topEpisodiosPorSerie(serie);
+            topEpisodios.forEach(e -> System.out.println("" +
+                    "Serie: " + e.getSerie().getTitulo() + ", Episodio: " + e.getTitulo()));
         }
 
     }
@@ -139,7 +154,7 @@ public class Principal {
     private void buscarSeriePorTitulo() {
         System.out.println("Escolha uma série pelo nome: ");
         var nomeBusca = scanner.nextLine();
-        Optional<Serie> serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeBusca);
+        serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeBusca);
 
         if(serieBuscada.isPresent()){
             System.out.println("Dados da série: " + serieBuscada.get());

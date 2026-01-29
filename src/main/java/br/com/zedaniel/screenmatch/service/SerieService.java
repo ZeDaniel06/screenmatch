@@ -1,5 +1,6 @@
 package br.com.zedaniel.screenmatch.service;
 
+import br.com.zedaniel.screenmatch.dto.EpisodioDTO;
 import br.com.zedaniel.screenmatch.dto.SerieDTO;
 import br.com.zedaniel.screenmatch.model.Serie;
 import br.com.zedaniel.screenmatch.repository.SerieRepository;
@@ -44,5 +45,17 @@ public class SerieService {
 
         return null;
 
+    }
+
+    public List<EpisodioDTO> obterTodasAsTemporadas(Long id) {
+        Optional<Serie> serie = repositorio.findById(id);
+        if(serie.isPresent()){
+            Serie s = serie.get();
+            return s.getEpisodios().stream()
+                    .map(e -> new EpisodioDTO(e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()))
+                    .collect(Collectors.toList());
+        }
+
+        return null;
     }
 }

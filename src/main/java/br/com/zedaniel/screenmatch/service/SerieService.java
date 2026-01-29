@@ -28,4 +28,8 @@ public class SerieService {
                         s.getAvaliacao(), s.getGenero(), s.getAtores(), s.getPoster(), s.getSinopse()))
                 .collect(Collectors.toList());
     }
+
+    public List<SerieDTO> obterLancamentos() {
+        return converterDados(repositorio.findTop5ByOrderByEpisodiosDataLancamentoDesc());
+    }
 }

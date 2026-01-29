@@ -18,6 +18,8 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 
     List<Serie> findByGenero(Categoria categoria);
 
+
+
     List<Serie> findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(Integer temporadas, Double avaliacao);
 
     //Abaixo exemplo de anotação com native query
@@ -34,4 +36,7 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 
     @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE s = :serie AND YEAR(e.dataLancamento) >= :anoLancamento")
     List<Episodio> episodiosPorSerieEAno(int anoLancamento, Serie serie);
+
+    List<Serie> findTop5ByOrderByEpisodiosDataLancamentoDesc();
+
 }
